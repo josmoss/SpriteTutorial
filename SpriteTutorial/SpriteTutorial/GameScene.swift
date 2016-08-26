@@ -69,9 +69,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 SKAction.waitForDuration(1.0)
             ])
         ))
+        
+        let backgroundMusic = SKAudioNode(fileNamed: "background-music-aac.caf")
+        backgroundMusic.autoplayLooped = true
+        addChild(backgroundMusic)
+        
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        
+        runAction(SKAction.playSoundFileNamed("pew-pew-lei.caf", waitForCompletion: false))
         
         // 1 - Choose once of the touches to work with
         guard let touch = touches.first else {
