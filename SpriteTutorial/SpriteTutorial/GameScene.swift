@@ -8,6 +8,13 @@
 
 import SpriteKit
 
+struct PhysicsCategory {
+    static let None      : UInt32 = 0
+    static let All       : UInt32 = UInt32.max
+    static let Monster   : UInt32 = 0b1       // 1
+    static let Projectile: UInt32 = 0b10      // 2
+}
+
 func + (left: CGPoint, right: CGPoint) -> CGPoint {
     return CGPoint(x: left.x + right.x, y: left.y + right.y)
 }
@@ -40,7 +47,7 @@ extension CGPoint {
     }
 }
 
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // 1
     let player = SKSpriteNode(imageNamed: "player")
@@ -52,6 +59,9 @@ class GameScene: SKScene {
         player.position = CGPoint(x: size.width * 0.1, y: size.height * 0.5)
         // 4
         addChild(player)
+        
+        physicsWorld.gravity = CGVectorMake(0, 0)
+        physicsWorld.contactDelegate = self
         
         runAction(SKAction.repeatActionForever(
             SKAction.sequence([
@@ -111,6 +121,12 @@ class GameScene: SKScene {
         
         //Create sprite
         let monster = SKSpriteNode(imageNamed: "monster")
+        
+        monster.physicsBody = SKPhysicsBody(rectangleOfSize: monster.size) // 1
+        monster.physicsBody?.dynamic = true // 2
+        monster.physicsBody?.categoryBitMask = PhysicsCategory.Monster // 3
+        monster.physicsBody?.contactTestBitMask = PhysicsCategory.Projectile // 4
+        monster.physicsBody?.collisionBitMask = PhysicsCategory.None // 5
         
         // Determine where to spawn the monster along the Y axis
         let actualY = random(min: monster.size.height/2, max: size.height - monster.size.height/2)
