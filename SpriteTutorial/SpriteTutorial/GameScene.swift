@@ -116,6 +116,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
+    func projectileDidCollideWithMonster(projectile:SKSpriteNode, monster:SKSpriteNode) {
+        print("Hit!")
+        projectile.removeFromParent()
+        monster.removeFromParent()
+    }
+    
     func random() -> CGFloat {
         return CGFloat(Float(arc4random()) / 0xFFFFFFFF)
     }
