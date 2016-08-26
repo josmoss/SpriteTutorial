@@ -51,6 +51,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // 1
     let player = SKSpriteNode(imageNamed: "player")
+    var monstersDestroyed = 0
     
     override func didMoveToView(view: SKView) {
         // 2
@@ -127,6 +128,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         print("Hit!")
         projectile.removeFromParent()
         monster.removeFromParent()
+        
+        monstersDestroyed++
+        if (monstersDestroyed > 30) {
+            let reveal = SKTransition.flipHorizontalWithDuration(0.5)
+            let gameOverScene = GameOverScene(size: self.size, won: true)
+            self.view?.presentScene(gameOverScene, transition: reveal)
+        }
     }
     
     func didBeginContact(contact: SKPhysicsContact) {
