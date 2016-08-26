@@ -84,6 +84,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let projectile = SKSpriteNode(imageNamed: "projectile")
         projectile.position = player.position
         
+        projectile.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width/2)
+        projectile.physicsBody?.dynamic = true
+        projectile.physicsBody?.categoryBitMask = PhysicsCategory.Projectile
+        projectile.physicsBody?.contactTestBitMask = PhysicsCategory.Monster
+        projectile.physicsBody?.collisionBitMask = PhysicsCategory.None
+        projectile.physicsBody?.usesPreciseCollisionDetection = true
+        
         // 3 - Determine offset of location to projectile
         let offset = touchLocation - projectile.position
         
